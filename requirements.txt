@@ -1,2 +1,10 @@
-fastapi
-python == 3.8
+annotated-types @ file:///C:/b/abs_0dmaoyhhj3/croot/annotated-types_1709542968311/work
+anyio @ file:///C:/b/abs_847uobe7ea/croot/anyio_1706220224037/work
+exceptiongroup @ file:///C:/b/abs_c5h1o1_b5b/croot/exceptiongroup_1706031441653/work
+fastapi @ file:///C:/b/abs_17bc_xka63/croot/fastapi_1693295449860/work
+idna @ file:///C:/b/abs_bdhbebrioa/croot/idna_1666125572046/work
+pydantic @ file:///C:/b/abs_f6ffn86wjx/croot/pydantic_1709578044014/work
+pydantic_core @ file:///C:/b/abs_05smrkbwjm/croot/pydantic-core_1709574000211/work
+sniffio @ file:///C:/b/abs_3akdewudo_/croot/sniffio_1705431337396/work
+starlette @ file:///C:/b/abs_f6jqjvlnz0/croot/starlette-recipe_1692980584602/work
+typing_extensions @ file:///C:/b/abs_72cdotwc_6/croot/typing_extensions_1705599364138/work
