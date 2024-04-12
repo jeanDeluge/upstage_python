@@ -1,11 +1,16 @@
 """
-python-telegram-bot v21.1
+We need two pakages for using this bot:
+
+1) python-dotenv
+pip install python-dotenv
+
+2) python-telegram-bot v21.1
 https://python-telegram-bot.org/
 https://docs.python-telegram-bot.org/en/stable/index.html
 https://docs.python-telegram-bot.org/en/stable/examples.conversationbot.html
 
-pip install python-telegram-bot
-pip install python-telegram-bot --upgrade
+PTB can be installed with optional dependencies:
+pip install "python-telegram-bot[all]"
 """
 
 from dotenv import load_dotenv
