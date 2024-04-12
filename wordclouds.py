@@ -1,4 +1,4 @@
-from wordclouds import WordCloud
+from wordcloud import WordCloud
 
 from konlpy.tag import Okt
 import pandas as pd
