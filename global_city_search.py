@@ -73,5 +73,11 @@ if '현지시각' in selection:
 
 # 글로벌 뉴스 (구현 미완)
 if '뉴스' in selection :
+  
+  # csv 만들고 보내는 코드 추후 구현
+  pass
+
+if '요약' in selection :
+  
   # csv 만들고 보내는 코드 추후 구현
   pass

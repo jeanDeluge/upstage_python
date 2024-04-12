@@ -49,7 +49,7 @@ def crawling_news():
     ai_summary_content_list=[]
 
     for news in news_list:
-        print('-----------')
+        # print('-----------')
         title = news.find_element(By.CLASS_NAME, 'sa_text_strong').text #뉴스제목
         company = news.find_element(By.CLASS_NAME, 'sa_text_press').text #언론사
         summarize_content = news.find_element(By.CLASS_NAME, 'sa_text_lede').text #내용
@@ -63,9 +63,9 @@ def crawling_news():
     for url in url_list:
         driver.get(url)
         content=driver.find_element(By.CLASS_NAME, 'go_trans._article_content').text #내용
-        print(content)
+        # print(content)
         ai_summary: str = textrank.summarize(content,k)
-        print(ai_summary) 
+        # print(ai_summary) 
         
         time.sleep(1)
         content_list.append(content)
@@ -84,8 +84,8 @@ def crawling_news():
 
 
 ### 스케쥴 매일 아침 9:30 에 크롤링 시작 
-# schedule.every().day.at("09:30").do(crawling_news)
-schedule.every(14).seconds.do(crawling_news)
+schedule.every().day.at("09:30").do(crawling_news)
+# schedule.every(14).seconds.do(crawling_news)
 while True:
     schedule.run_pending()
-    time.sleep(1)    
+    driver.close()
