@@ -100,18 +100,17 @@ def find_keyword(sentence: str) -> dict:
 
 
 
-    if len(city_result) == 0 or len(command_result) == 0:
+    if (len(city_result) == 0) and (len(command_result) == 0):
         print(city_result, command_result)
         return {"result": {"city": city_result, "command": command_result} , "error": "잘 못 알아들었어요. 다시 시도해주세요" }
 
-    elif len(city_result) != 0 and city_result[0] not in city_list:
+    elif len(command_result)== 0:
             print(city_result, command_result)
-
             return {"result": {"city": city_result, "command": command_result}  , "error": "시간, 날씨, 뉴스 중 하나 말씀 주세요" }
-    elif len(command_result) != 0 and command_result[0] not in command_result:
-            print(city_result, command_result)
 
+    elif len(city_result) == 0:
+            print(city_result, command_result)
             return {"result": {"city": city_result, "command": command_result} , "error": "잘 못 알아들었습니다. 글로벌 도시 이름 하나 말씀 주세요."}
-    
-    print(city_result)
-    return {"result": {"city": city_result, "command": command_result}, "error": -1}
+    else:
+        print(city_result)
+        return {"result": {"city": city_result, "command": command_result}, "error": -1}
