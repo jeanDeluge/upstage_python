@@ -33,13 +33,14 @@ def find_keyword(sentence: str) -> dict:
     citys=['뉴욕','런던','파리','도쿄','베이징','홍콩','로스앤젤레스','시카고','싱가포르','워싱턴DC']
 
     command_list = [
-        "시간",
         "날씨",
-        "뉴스"
+        "뉴스",
+        "현지시각"
     ]
 
     city_list = [
         "뉴욕",
+        "유용",
         "런던",
         "파리",
         "도쿄", # 도쿄
@@ -78,6 +79,11 @@ def find_keyword(sentence: str) -> dict:
 
 
     for cityname in city_result:
+        
+        if cityname == "유용":
+            city_result.remove("유용")
+            city_result.append("뉴욕")
+            
         if cityname == "동경":
             city_result.remove("동경")
             city_result.append("도쿄")
@@ -94,13 +100,18 @@ def find_keyword(sentence: str) -> dict:
 
 
 
-    if len(city_result) == 0 and len(command_result) == 0:
+    if len(city_result) == 0 or len(command_result) == 0:
+        print(city_result, command_result)
         return {"result": {"city": city_result, "command": command_result} , "error": "잘 못 알아들었어요. 다시 시도해주세요" }
 
-    elif city_result not in city_list:
+    elif len(city_result) != 0 and city_result[0] not in city_list:
+            print(city_result, command_result)
+
             return {"result": {"city": city_result, "command": command_result}  , "error": "시간, 날씨, 뉴스 중 하나 말씀 주세요" }
-    elif command_result not in command_result:
+    elif len(command_result) != 0 and command_result[0] not in command_result:
+            print(city_result, command_result)
+
             return {"result": {"city": city_result, "command": command_result} , "error": "잘 못 알아들었습니다. 글로벌 도시 이름 하나 말씀 주세요."}
     
     print(city_result)
-    return {"result": {"city": city_result, "command": command_result}}
+    return {"result": {"city": city_result, "command": command_result}, "error": -1}

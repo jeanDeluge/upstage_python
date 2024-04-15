@@ -25,6 +25,7 @@ from telegram.ext import (
     filters,
 )
 from stt import whisper_result
+from global_city_search import get_global_city
 
 load_dotenv(verbose=True)
 TOKEN = os.environ.get("TOKEN")
@@ -62,17 +63,20 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     result = whisper_result()
     try:
-        if result["error"]:
-            raise EOFError
+        if result["error"] != -1:
+            raise Exception(result["error"])
         else:
+            #{"result": {"city": city_result, "command": command_result}}
+            text  = get_global_city(result["result"]["city"][0], result["result"]["command"])
             await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=result["result"],
+            text=text,
         )
-    except EOFError as e:
+    except Exception as e:
+        print(result)
         await context.bot.send_message(
             chat_id=update.effective_chat.id,
-            text=result["error"],
+            text=result["error"]
         )
         
 
