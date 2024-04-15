@@ -8,3 +8,5 @@ openai-whisper==20231117
 PyAudio==0.2.14
 pandas
 scipy
+python-telegram-bot
+python-dotenv
