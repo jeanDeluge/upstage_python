@@ -30,7 +30,7 @@ def whisper_result():
 
 
 def find_keyword(sentence: str) -> dict:
-# citys=['뉴욕','런던','파리','도쿄','베이징','홍콩','로스앤젤레스','시카고','싱가포르','워싱턴DC']
+    citys=['뉴욕','런던','파리','도쿄','베이징','홍콩','로스앤젤레스','시카고','싱가포르','워싱턴DC']
 
     command_list = [
         "시간",
@@ -65,39 +65,42 @@ def find_keyword(sentence: str) -> dict:
 
     # 엘에이
     # 예외처리: 무음, 문장에 키워드가 없을 때.
-    keyword_list = command_list.copy()
-    keyword_list.extend(city_list)
-    result_list = []
-    for keyword in keyword_list:
-        if keyword in sentence.split(): 
-            result_list.append(keyword)
+    city_result = []
+    command_result= []
+    received_sentence = sentence.split()
+    for keyword in city_list:
+        if keyword in received_sentence: 
+            city_result.append(keyword)
+
+    for keyword in command_list:
+        if keyword in received_sentence:
+            command_result.append(keyword)
 
 
-    for cityname in result_list:
+    for cityname in city_result:
         if cityname == "동경":
-            result_list.remove("동경")
-            result_list.append("도쿄")
+            city_result.remove("동경")
+            city_result.append("도쿄")
         
         if cityname in ["엘에이", "에레이", "L.A.", "LA", "L.A"]:
-            result_list.remove(cityname)
-            result_list.append("로스앤젤레스")
+            city_result.remove(cityname)
+            city_result.append("로스앤젤레스")
         if cityname == "싱가폴":
-            result_list.remove(cityname)
-            result_list.append("싱가포르")
+            city_result.remove(cityname)
+            city_result.append("싱가포르")
         if cityname in ["워싱턴디씨", "워싱턴", "워싱턴 DC", "워싱턴DC", "워싱턴 D.C.", "워싱턴D.C."]:
-            result_list.remove(cityname)
-            result_list.append("워싱턴DC")
+            city_result.remove(cityname)
+            city_result.append("워싱턴DC")
 
 
 
-    if len(result_list) == 0: # result_list == []
-        return {"result": result_list , "error": "잘 못 알아들었어요. 다시 시도해주세요" }
+    if len(city_result) == 0 and len(command_result) == 0:
+        return {"result": {"city": city_result, "command": command_result} , "error": "잘 못 알아들었어요. 다시 시도해주세요" }
 
-    for result in result_list:
-        if result not in ["시간", "날씨", "뉴스"]:
-            return {"result": result_list , "error": "시간, 날씨, 뉴스 중 하나 말씀 주세요" }
-        if result not in city_list:
-            return {"result": result_list , "error": "잘 못 알아들었습니다. 글로벌 도시 이름 하나 말씀 주세요."}
+    elif city_result not in city_list:
+            return {"result": {"city": city_result, "command": command_result}  , "error": "시간, 날씨, 뉴스 중 하나 말씀 주세요" }
+    elif command_result not in command_result:
+            return {"result": {"city": city_result, "command": command_result} , "error": "잘 못 알아들었습니다. 글로벌 도시 이름 하나 말씀 주세요."}
     
-    print(result_list)
-    return {"result": result_list}
+    print(city_result)
+    return {"result": {"city": city_result, "command": command_result}}
