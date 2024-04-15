@@ -47,7 +47,7 @@ def find_keyword(sentence: str) -> dict:
         "워싱턴DC",
     ]
 
-    command_list = ["날씨", "뉴스", "현지시각", "시각", "시간"]
+    command_list = ["날씨", "뉴스", "현지시각", "시각", "시간","요약","요약해","요약해줘","요약해죠","류스"]
 
     city_list = [
         "뉴욕",
@@ -119,6 +119,15 @@ def find_keyword(sentence: str) -> dict:
         if command in ["시간", "시각"]:
             command_result.remove(command)
             command_result.append("현지시각")
+        if command in ["요약","요약해","요약해줘","요약해죠"]:
+            command_result.remove(command)
+            command_result.append("요약")
+            city_result.append('서울')    
+        if command in ["뉴스","류스"]:
+            command_result.remove(command)
+            command_result.append("뉴스")
+            city_result.append('서울')      
+
 
     if (len(city_result) == 0) and (len(command_result) == 0):
         print(city_result, command_result)
@@ -138,7 +147,7 @@ def find_keyword(sentence: str) -> dict:
         print(city_result, command_result)
         return {
             "result": {"city": city_result, "command": command_result},
-            "error": "잘 못 알아들었습니다. 글로벌 도시 이름 하나 말씀 주세요.",
+            "error": "잘 못 알아들었습니다. 다시 시도해주세요.",
         }
     else:
         print(city_result)

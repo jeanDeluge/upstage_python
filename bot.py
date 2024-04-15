@@ -61,17 +61,36 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=update.effective_chat.id,
         text="Okay, Just a moment. \nIt takes a little time.",
     )
+    
     result = whisper_result()
+
     try:
         if result["error"] != -1:
             raise Exception(result["error"])
         else:
             #{"result": {"city": city_result, "command": command_result}}
-            text  = await get_global_city(result["result"]["city"][0], result["result"]["command"])
-            await context.bot.send_message(
-            chat_id=update.effective_chat.id,
-            text=text,
-        )
+            crawling_result  = await get_global_city(result["result"]["city"][0], result["result"]["command"])
+
+            # 뉴스 -> csv / 요약: text, img
+            if crawling_result==0:
+                print('제로입니다')
+            else:    
+                if 'text' in crawling_result.keys():
+                    print('text니?응 마자')
+                    await context.bot.send_message(
+                        chat_id=update.effective_chat.id,
+                        text=crawling_result['text']
+                    )
+                else:
+                    print('text니?아니야 난 이미지야')
+                    await context.bot.send_photo(
+                        chat_id=update.effective_chat.id, photo=open("output/wordcloud_new.png", "rb")
+                    )
+                    await context.bot.send_document(
+                        chat_id=update.effective_chat.id,document='output/news.csv'
+                    )
+               
+            
     except Exception as e:
         print(result)
         await context.bot.send_message(
@@ -88,7 +107,8 @@ async def message_others(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 
 if __name__ == "__main__":
-    application = ApplicationBuilder().token(TOKEN).build()
+
+    application = ApplicationBuilder().token(TOKEN).read_timeout(30).write_timeout(30).build()
 
     start_handler = CommandHandler("start", start)
     message_voice_handler = MessageHandler(

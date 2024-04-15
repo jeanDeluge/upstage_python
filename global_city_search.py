@@ -10,6 +10,19 @@ from selenium.webdriver.common.by import By
         
 async def get_global_city(city, command): #"뉴욕"
   # chrome driver
+  
+  selection=command
+  print(selection)
+
+  if '뉴스' in selection :
+    print('뉴스 들어왔어 일단')
+    if '요약' in selection :
+      # 뉴스 상단 3개 요약
+      print('요약된거니? ㅇㅇ')
+      df=pd.read_csv('output/news.csv')
+      return {'text':df['ai_summary'][0:3]}
+    return 0
+
   driver = webdriver.Chrome()
 
   url='https://m.naver.com/'
@@ -31,7 +44,7 @@ async def get_global_city(city, command): #"뉴욕"
   # 일단은 첫번째 도시만 검색하게 구현 (구현미완)
 
   # 사용자가 무엇을 원하는지? 1) 날씨 2) 현지시각 3)뉴스
-  selection=command
+
 
   driver.find_element(By.XPATH,'//*[@id="MM_SEARCH_FAKE"]').click()
   driver.find_element(By.XPATH,'//*[@id="query"]').send_keys(f'{city} 날씨')
@@ -44,7 +57,7 @@ async def get_global_city(city, command): #"뉴욕"
   if '날씨' in selection:
       
       # csv저장을 위한 dataframe 생성
-      df = pd.DataFrame(columns=['city','temperature','sky','feel_temperature']) 
+      # df = pd.DataFrame(columns=['city','temperature','sky','feel_temperature']) 
       
       weather = driver.find_element(By.XPATH,'//*[@id="ct"]/section[1]/div/div[2]/div/div/div[1]/div[1]/div/div[2]/div/div[1]/div[2]').text
       weather=weather.split('\n') 
@@ -52,34 +65,26 @@ async def get_global_city(city, command): #"뉴욕"
       sky=weather[2]
       feel_temperature=weather[3]
       
-      print(temperature, sky, feel_temperature)
-      df.loc[0] = [city,temperature, sky, feel_temperature]
-      return f"{city}의 기온은 {temperature}이며 하늘은 {sky}입니다. 체감온도는 {feel_temperature}입니다"
+      # print(temperature, sky, feel_temperature)
+      # df.loc[0] = [city,temperature, sky, feel_temperature]
+      return {'text':f"{city}의 기온은 {temperature}이며 하늘은 {sky}입니다. 체감온도는 {feel_temperature}입니다"}
       # dataframe를 csv로 저장
       # df.to_csv("output/city_weather.csv", encoding='utf-8-sig',index=False) # dataframe을 csv로
 
   # 글로벌 도시 현지시각    
   if '현지시각' in selection:
       
-      # csv저장을 위한 dataframe 생성
-      df = pd.DataFrame(columns=['city','city_time']) 
-      
-      city_time=driver.find_element(By.XPATH,'//*[@id="ct"]/section[1]/div/div[2]/div/div/div[1]/div[1]/div/div[2]/div/div[2]/dl[1]/dd[1]').text
-      print(city_time)
-      
-      df.loc[0] = [city, city_time]
-      return f"{city}의 현지 시각은 {city_time}입니다"
-
-      # dataframe를 csv로 저장
-      #df.to_csv("output/city_time.csv", encoding='utf-8-sig',index=False) # dataframe을 csv로
-
-  # 글로벌 뉴스 (구현 미완)
-  if '뉴스' in selection :
+    # csv저장을 위한 dataframe 생성
+    # df = pd.DataFrame(columns=['city','city_time']) 
     
-    # csv 만들고 보내는 코드 추후 구현
-    pass
-
-  if '요약' in selection :
+    city_time=driver.find_element(By.XPATH,'//*[@id="ct"]/section[1]/div/div[2]/div/div/div[1]/div[1]/div/div[2]/div/div[2]/dl[1]/dd[1]').text
+    print(city_time)
     
-    # csv 만들고 보내는 코드 추후 구현
-    pass
+    # df.loc[0] = [city, city_time]
+    return {'text': f"{city}의 현지 시각은 {city_time}입니다"}
+
+    # dataframe를 csv로 저장
+    #df.to_csv("output/city_time.csv", encoding='utf-8-sig',index=False) # dataframe을 csv로
+
+  
+    

@@ -12,10 +12,11 @@ from typing import List
 from selenium import webdriver 
 from selenium.webdriver.common.by import By
         
-# chrome driver
-driver = webdriver.Chrome()
+
 
 def crawling_news():
+    # chrome driver
+    driver = webdriver.Chrome()
     
     # 리스트 형식으로 저장하기 위한 클래스 선언
     class MyTokenizer:
@@ -80,7 +81,7 @@ def crawling_news():
     
     # dataframe를 csv로 저장
     df.to_csv("output/news.csv", encoding='utf-8-sig',index=False)
-
+    driver.close()
 
 
 ### 스케쥴 매일 아침 9:30 에 크롤링 시작 
@@ -88,4 +89,3 @@ schedule.every().day.at("09:30").do(crawling_news)
 # schedule.every(14).seconds.do(crawling_news)
 while True:
     schedule.run_pending()
-    driver.close()
