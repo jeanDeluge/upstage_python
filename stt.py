@@ -1,3 +1,4 @@
+import platform 
 import whisper
 import subprocess
 
@@ -19,10 +20,13 @@ import subprocess
 def whisper_result():
     print("들어왔음")
     out = subprocess.run(
-        ["whisper", "output.wav", "--language", "Korean"], capture_output=True
+        ["whisper", "output.wav", "--language", "Korean"], capture_output=True,
     )
     print("실행은 되었음")
-    result = out.stdout.decode(encoding="utf-8")
+    if platform.system()=="Windows":
+        result = out.stdout.decode(encoding="CP949")
+    else : 
+        result= out.stdout.decode(encoding="utf-8")
     # model = whisper.load_model("base")
     # result = model.transcribe('C:/Users/seohyegyo/Desktop/upstage_python/output.wav')
     print(result)
