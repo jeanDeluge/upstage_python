@@ -67,7 +67,7 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             raise Exception(result["error"])
         else:
             #{"result": {"city": city_result, "command": command_result}}
-            text  = get_global_city(result["result"]["city"][0], result["result"]["command"])
+            text  = await get_global_city(result["result"]["city"][0], result["result"]["command"])
             await context.bot.send_message(
             chat_id=update.effective_chat.id,
             text=text,

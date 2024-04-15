@@ -8,7 +8,7 @@ warnings.filterwarnings('ignore')
 from selenium import webdriver 
 from selenium.webdriver.common.by import By
         
-def get_global_city(city, command): #"뉴욕"
+async def get_global_city(city, command): #"뉴욕"
   # chrome driver
   driver = webdriver.Chrome()
 
