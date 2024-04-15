@@ -2,7 +2,7 @@ import whisper
 import subprocess
 
 # model = whisper.load_model("base")
-# result = model.transcribe("audio.m4a")
+# result = model.transcribe("output.m4a")
 # print(result["text"])
 
 # 속도가 느림 -> 직접 명령어 입력 형태로 바꿈
@@ -20,7 +20,9 @@ def whisper_result():
     out = subprocess.run(
         ["whisper", "output.wav", "--language", "Korean"], capture_output=True
     )
-    result = out.stdout.decode(encoding="utf-8")
+    # result = out.stdout.decode(encoding="utf-8")
+    model = whisper.load_model("base")
+    result = model.transcribe('C:/Users/seohyegyo/Desktop/upstage_python/output.wav')
     find_keyword(result)
 
 
@@ -93,5 +95,6 @@ def find_keyword(sentence: str) -> dict:
             return {"result": result_list , "error": "시간, 날씨, 뉴스 중 하나 말씀 주세요" }
         if result not in city_list:
             return {"result": result_list , "error": "잘 못 알아들었습니다. 글로벌 도시 이름 하나 말씀 주세요."}
-
+    
+    print(result_list)
     return {"result": result_list}

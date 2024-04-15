@@ -24,6 +24,7 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
+from stt import whisper_result
 
 load_dotenv(verbose=True)
 TOKEN = os.environ.get("TOKEN")
@@ -59,6 +60,8 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=update.effective_chat.id,
         text="Okay, Just a moment. \nIt takes a little time.",
     )
+
+    whisper_result()
 
 
 async def message_others(update: Update, context: ContextTypes.DEFAULT_TYPE):
