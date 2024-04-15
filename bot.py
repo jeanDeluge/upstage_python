@@ -60,15 +60,27 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=update.effective_chat.id,
         text="Okay, Just a moment. \nIt takes a little time.",
     )
-
-    whisper_result()
-
+    result = whisper_result()
+    try:
+        if result["error"]:
+            raise EOFError
+        else:
+            await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=result["result"],
+        )
+    except EOFError as e:
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text=result["error"],
+        )
+        
 
 async def message_others(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await context.bot.send_message(
-        chat_id=update.effective_chat.id,
-        text="Oops, I cannot understand you. \nCould you please share your voice with me?",
-    )
+        await context.bot.send_message(
+            chat_id=update.effective_chat.id,
+            text="Oops, I cannot understand you. \nCould you please share your voice with me?",
+        )
 
 
 if __name__ == "__main__":

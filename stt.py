@@ -17,13 +17,16 @@ import subprocess
 
 
 def whisper_result():
+    print("들어왔음")
     out = subprocess.run(
         ["whisper", "output.wav", "--language", "Korean"], capture_output=True
     )
-    # result = out.stdout.decode(encoding="utf-8")
-    model = whisper.load_model("base")
-    result = model.transcribe('C:/Users/seohyegyo/Desktop/upstage_python/output.wav')
-    find_keyword(result)
+    print("실행은 되었음")
+    result = out.stdout.decode(encoding="utf-8")
+    # model = whisper.load_model("base")
+    # result = model.transcribe('C:/Users/seohyegyo/Desktop/upstage_python/output.wav')
+    print(result)
+    return find_keyword(result) #{"result": "내가 말한거"}
 
 
 def find_keyword(sentence: str) -> dict:
