@@ -53,7 +53,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     voice_file = await update.message.effective_attachment.get_file()
-    await voice_file.download_to_drive("output.wav")
+    await voice_file.download_to_drive("output/output.wav")
     # voice_file = await update.message.voice.get_file()
     # await voice_file.download_to_drive("output.wav")
 
