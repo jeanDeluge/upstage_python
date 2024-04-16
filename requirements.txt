@@ -11,3 +11,5 @@ scipy
 python-telegram-bot
 python-dotenv
 uvicorn
+urllib3
+webdriver_manager
