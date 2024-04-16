@@ -13,7 +13,7 @@ async def get_global_city(city, command): #"뉴욕"
   
   selection=command
   print(command)
-  
+
   if '뉴스' in selection :
     
     if '요약' in selection :
@@ -69,7 +69,7 @@ async def get_global_city(city, command): #"뉴욕"
       
       # print(temperature, sky, feel_temperature)
       # df.loc[0] = [city,temperature, sky, feel_temperature]
-      return {'text':f"{city}의 기온은 {temperature}이며 하늘은 {sky}입니다. 체감온도는 {feel_temperature}입니다"}
+      return {'text':f"{city}의 기온은 {temperature}이며 하늘은 {sky}입니다. {feel_temperature}입니다."}
       # dataframe를 csv로 저장
       # df.to_csv("output/city_weather.csv", encoding='utf-8-sig',index=False) # dataframe을 csv로
 
@@ -83,7 +83,7 @@ async def get_global_city(city, command): #"뉴욕"
     # print(city_time)
     
     # df.loc[0] = [city, city_time]
-    return {'text': f"{city}의 현지 시각은 {city_time}입니다"}
+    return {'text': f"{city}의 현지 시각은 {city_time}입니다."}
 
     # dataframe를 csv로 저장
     #df.to_csv("output/city_time.csv", encoding='utf-8-sig',index=False) # dataframe을 csv로
