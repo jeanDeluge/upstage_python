@@ -12,7 +12,8 @@ async def get_global_city(city, command): #"뉴욕"
   # chrome driver
   
   selection=command
-
+  print(command)
+  
   if '뉴스' in selection :
     
     if '요약' in selection :

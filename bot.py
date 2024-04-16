@@ -26,6 +26,7 @@ from telegram.ext import (
 )
 from stt import whisper_result
 from global_city_search import get_global_city
+import threading
 
 load_dotenv(verbose=True)
 TOKEN = os.environ.get("TOKEN")
@@ -37,7 +38,7 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_photo(
-        chat_id=update.effective_chat.id, photo=open("bot.jpg", "rb")
+        chat_id=update.effective_chat.id, photo=open("rss/bot.jpg", "rb")
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -108,7 +109,7 @@ if __name__ == "__main__":
 
     start_handler = CommandHandler("start", start)
     message_voice_handler = MessageHandler(
-        filters.VOICE | filters.VIDEO_NOTE, message_voice
+        filters.VOICE , message_voice
     )
     message_others_handler = MessageHandler(~filters.VOICE, message_others)
 
@@ -116,4 +117,12 @@ if __name__ == "__main__":
     application.add_handler(message_voice_handler)
     application.add_handler(message_others_handler)
 
+    # thread 처리 5개
     application.run_polling()
+    
+    for i in range(3):
+        print(i)
+        th=threading.Thread(message_voice,args=(i,))
+        th.start()
+        
+

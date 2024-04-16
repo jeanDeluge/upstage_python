@@ -18,7 +18,7 @@ import subprocess
 
 def whisper_result():
     out = subprocess.run(
-        ["whisper", "output/output.wav", "--language", "Korean","--output_format","txt","--output_dir","output"], capture_output=True,
+        ["whisper", "output/output.wav", "--language", "Korean","--output_format","txt","--output_dir","output","--thread",'3'], capture_output=True,
     )
     if platform.system()=="Windows":
         result = out.stdout.decode(encoding="CP949")
@@ -31,7 +31,8 @@ def whisper_result():
 
 def find_keyword(sentence: str) -> dict:
 
-    command_list = ["날씨", "뉴스", "뉴스를","류스","류쓰","누스","유스","니스","나이스","현지시각", "시각", "시간","요약","요약해","요약해죠","요약해줘"]
+    print(sentence)
+    command_list = ["날씨", "뉴스","뉴스에", "뉴스를","류스","류쓰","누스","유스","니스","나이스","현지시각", "시각", "시간","요약","요약해","요약해죠","요약해줘"]
 
     city_list = [
         "뉴욕",
@@ -106,7 +107,7 @@ def find_keyword(sentence: str) -> dict:
         elif command in ["요약해줘","요약해","요약해죠"]:
             command_result.remove(command)
             command_result.append("요약")
-        elif command in ["류스","류쓰","누스","유스","뉴스를","니스","나이스"]:
+        elif command in ["류스","류쓰","누스","유스","뉴스를","니스","나이스","뉴스에"]:
             command_result.remove(command)
             command_result.append("뉴스")
     
