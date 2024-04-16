@@ -26,6 +26,7 @@ from telegram.ext import (
 )
 from stt import whisper_result
 from global_city_search import get_global_city
+import threading
 
 load_dotenv(verbose=True)
 TOKEN = os.environ.get("TOKEN")
@@ -37,7 +38,7 @@ logging.basicConfig(
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await context.bot.send_photo(
-        chat_id=update.effective_chat.id, photo=open("bot.jpg", "rb")
+        chat_id=update.effective_chat.id, photo=open("rss/bot.jpg", "rb")
     )
     await context.bot.send_message(
         chat_id=update.effective_chat.id,
@@ -53,7 +54,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     voice_file = await update.message.effective_attachment.get_file()
-    await voice_file.download_to_drive("output.wav")
+    await voice_file.download_to_drive("output/output.wav")
     # voice_file = await update.message.voice.get_file()
     # await voice_file.download_to_drive("output.wav")
 
@@ -72,23 +73,19 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             crawling_result  = await get_global_city(result["result"]["city"][0], result["result"]["command"])
 
             # 뉴스 -> csv / 요약: text, img
-            if crawling_result==0:
-                print('제로입니다')
-            else:    
-                if 'text' in crawling_result.keys():
-                    print('text니?응 마자')
-                    await context.bot.send_message(
-                        chat_id=update.effective_chat.id,
-                        text=crawling_result['text']
-                    )
-                else:
-                    print('text니?아니야 난 이미지야')
+            if 'text' in crawling_result.keys():
+                await context.bot.send_message(
+                    chat_id=update.effective_chat.id,
+                    text=crawling_result['text']
+                )
+                if 'command_type' in crawling_result.keys():
                     await context.bot.send_photo(
-                        chat_id=update.effective_chat.id, photo=open("output/wordcloud_new.png", "rb")
+                    chat_id=update.effective_chat.id, photo=open("output/wordcloud_new.png", "rb")
                     )
-                    await context.bot.send_document(
-                        chat_id=update.effective_chat.id,document='output/news.csv'
-                    )
+            else:
+                await context.bot.send_document(
+                    chat_id=update.effective_chat.id,document='output/news.csv'
+                )
                
             
     except Exception as e:
@@ -112,7 +109,7 @@ if __name__ == "__main__":
 
     start_handler = CommandHandler("start", start)
     message_voice_handler = MessageHandler(
-        filters.VOICE | filters.VIDEO_NOTE, message_voice
+        filters.VOICE , message_voice
     )
     message_others_handler = MessageHandler(~filters.VOICE, message_others)
 
@@ -120,4 +117,12 @@ if __name__ == "__main__":
     application.add_handler(message_voice_handler)
     application.add_handler(message_others_handler)
 
+    # thread 처리 5개
     application.run_polling()
+    
+    for i in range(3):
+        print(i)
+        th=threading.Thread(message_voice,args=(i,))
+        th.start()
+        
+

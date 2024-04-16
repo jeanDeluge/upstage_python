@@ -1,5 +1,4 @@
 import platform 
-import whisper
 import subprocess
 
 # model = whisper.load_model("base")
@@ -18,13 +17,19 @@ import subprocess
 
 # whisper_result(): 음성을 받고 특정 키워드를 찾는 함수를 만듦.
 def whisper_result():
+<<<<<<< HEAD
     print("들어왔음")
     # subprocess-> whisper-> wav파일을 한국어 텍스트로 변환 -> 결과를 Out에 저장
+=======
+>>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     out = subprocess.run(
-        ["whisper", "output.wav", "--language", "Korean"], capture_output=True,
+        ["whisper", "output/output.wav", "--language", "Korean","--output_format","txt","--output_dir","output","--thread",'3'], capture_output=True,
     )
+<<<<<<< HEAD
     print("실행은 되었음")
     # out(변환된 텍스트)를 윈도우면 CP949,아니면 utf-8로 디코딩 -> result변수에 저장
+=======
+>>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     if platform.system()=="Windows":
         result = out.stdout.decode(encoding="CP949")
     else : 
@@ -32,13 +37,17 @@ def whisper_result():
     print(result)
     # model = whisper.load_model("base")
     # result = model.transcribe('C:/Users/seohyegyo/Desktop/upstage_python/output.wav')
+<<<<<<< HEAD
 
     #result(디코딩한 텍스트)를 find_keyword함수를 통해 특정 키워드를 찾아 return 
+=======
+>>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     return find_keyword(result)  # {"result": "내가 말한거"}
 
 # 문자열을 입력 받아 딕셔너리를 반환하는 find_keyword 함수 정의
 # sentence라는 매개변수를 통해 find_keyword의 값이 전달
 def find_keyword(sentence: str) -> dict:
+<<<<<<< HEAD
     # 검색할 도시 list
     citys = [
         "뉴욕",
@@ -56,6 +65,12 @@ def find_keyword(sentence: str) -> dict:
     # 도시 외 명령어 
     command_list = ["날씨", "뉴스", "현지시각", "시각", "시간","요약","요약해","요약해줘","요약해죠","류스"]
     # 도시 명령어 (bot이 잘못 출력한 도시 이름들?)
+=======
+
+    print(sentence)
+    command_list = ["날씨", "뉴스","뉴스에", "뉴스를","류스","류쓰","누스","유스","니스","나이스","현지시각", "시각", "시간","요약","요약해","요약해죠","요약해줘"]
+
+>>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     city_list = [
         "뉴욕",
         "유용",
@@ -76,11 +91,11 @@ def find_keyword(sentence: str) -> dict:
         "워싱턴 DC",
         "워싱턴DC",
         "워싱턴 D.C.",
-        "워싱턴D.C." "워싱턴디씨",  # 워싱턴DC
+        "워싱턴D.C.", 
+        "워싱턴디씨",  # 워싱턴DC
         "워싱턴",  # 워싱턴DC
     ]
 
-    # 엘에이
     # 예외처리: 무음, 문장에 키워드가 없을 때.
     city_result = []
     command_result = []
@@ -133,36 +148,33 @@ def find_keyword(sentence: str) -> dict:
         if command in ["시간", "시각"]:
             command_result.remove(command)
             command_result.append("현지시각")
-        if command in ["요약","요약해","요약해줘","요약해죠"]:
+        elif command in ["요약해줘","요약해","요약해죠"]:
             command_result.remove(command)
             command_result.append("요약")
-            city_result.append('서울')    
-        if command in ["뉴스","류스"]:
+        elif command in ["류스","류쓰","누스","유스","뉴스를","니스","나이스","뉴스에"]:
             command_result.remove(command)
             command_result.append("뉴스")
-            city_result.append('서울')      
-
+    
+    for command in command_result:
+        if len(city_result)==0 and (command=="뉴스" or command=="요약"):
+            city_result.append("서울")
 
     if (len(city_result) == 0) and (len(command_result) == 0):
-        print(city_result, command_result)
         return {
             "result": {"city": city_result, "command": command_result},
             "error": "잘 못 알아들었어요. 다시 시도해주세요",
         }
 
     elif len(command_result) == 0:
-        print(city_result, command_result)
         return {
             "result": {"city": city_result, "command": command_result},
             "error": "시간, 날씨, 뉴스 중 하나 말씀 주세요",
         }
 
     elif len(city_result) == 0:
-        print(city_result, command_result)
         return {
             "result": {"city": city_result, "command": command_result},
             "error": "잘 못 알아들었습니다. 다시 시도해주세요.",
         }
     else:
-        print(city_result)
         return {"result": {"city": city_result, "command": command_result}, "error": -1}
