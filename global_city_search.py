@@ -12,16 +12,17 @@ async def get_global_city(city, command): #"뉴욕"
   # chrome driver
   
   selection=command
-  print(selection)
 
   if '뉴스' in selection :
-    print('뉴스 들어왔어 일단')
+    
     if '요약' in selection :
-      # 뉴스 상단 3개 요약
-      print('요약된거니? ㅇㅇ')
+      # 뉴스 상단 3개 요약(text) & wordcloud(img)
       df=pd.read_csv('output/news.csv')
-      return {'text':df['ai_summary'][0:3]}
-    return 0
+      df='\n\n---------------------------------\n\n'.join(df.ai_summary[0:3].to_list())
+      return {'text':df,'command_type':'news_summary'}
+    
+    # 뉴스 csv 파일로 보내기
+    return {'command_type':'only_news'}
 
   driver = webdriver.Chrome()
 
@@ -78,7 +79,7 @@ async def get_global_city(city, command): #"뉴욕"
     # df = pd.DataFrame(columns=['city','city_time']) 
     
     city_time=driver.find_element(By.XPATH,'//*[@id="ct"]/section[1]/div/div[2]/div/div/div[1]/div[1]/div/div[2]/div/div[2]/dl[1]/dd[1]').text
-    print(city_time)
+    # print(city_time)
     
     # df.loc[0] = [city, city_time]
     return {'text': f"{city}의 현지 시각은 {city_time}입니다"}

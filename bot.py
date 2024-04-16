@@ -72,23 +72,19 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
             crawling_result  = await get_global_city(result["result"]["city"][0], result["result"]["command"])
 
             # 뉴스 -> csv / 요약: text, img
-            if crawling_result==0:
-                print('제로입니다')
-            else:    
-                if 'text' in crawling_result.keys():
-                    print('text니?응 마자')
-                    await context.bot.send_message(
-                        chat_id=update.effective_chat.id,
-                        text=crawling_result['text']
-                    )
-                else:
-                    print('text니?아니야 난 이미지야')
+            if 'text' in crawling_result.keys():
+                await context.bot.send_message(
+                    chat_id=update.effective_chat.id,
+                    text=crawling_result['text']
+                )
+                if 'command_type' in crawling_result.keys():
                     await context.bot.send_photo(
-                        chat_id=update.effective_chat.id, photo=open("output/wordcloud_new.png", "rb")
+                    chat_id=update.effective_chat.id, photo=open("output/wordcloud_new.png", "rb")
                     )
-                    await context.bot.send_document(
-                        chat_id=update.effective_chat.id,document='output/news.csv'
-                    )
+            else:
+                await context.bot.send_document(
+                    chat_id=update.effective_chat.id,document='output/news.csv'
+                )
                
             
     except Exception as e:

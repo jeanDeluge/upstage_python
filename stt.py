@@ -47,7 +47,7 @@ def find_keyword(sentence: str) -> dict:
         "워싱턴DC",
     ]
 
-    command_list = ["날씨", "뉴스", "현지시각", "시각", "시간","요약","요약해","요약해줘","요약해죠","류스"]
+    command_list = ["날씨", "뉴스", "뉴스를","류스","류쓰","누스","유스","니스","나이스","현지시각", "시각", "시간","요약","요약해","요약해죠","요약해줘"]
 
     city_list = [
         "뉴욕",
@@ -86,6 +86,8 @@ def find_keyword(sentence: str) -> dict:
         if keyword in received_sentence:
             command_result.append(keyword)
 
+    print(command_result)
+
     for cityname in city_result:
 
         if cityname == "유용":
@@ -119,15 +121,16 @@ def find_keyword(sentence: str) -> dict:
         if command in ["시간", "시각"]:
             command_result.remove(command)
             command_result.append("현지시각")
-        if command in ["요약","요약해","요약해줘","요약해죠"]:
+        elif command in ["요약해줘","요약해","요약해죠"]:
             command_result.remove(command)
             command_result.append("요약")
-            city_result.append('서울')    
-        if command in ["뉴스","류스"]:
+        elif command in ["류스","류쓰","누스","유스","뉴스를","니스","나이스"]:
             command_result.remove(command)
             command_result.append("뉴스")
-            city_result.append('서울')      
-
+    
+    for command in command_result:
+        if len(city_result)==0 and (command=="뉴스" or command=="요약"):
+            city_result.append("서울")
 
     if (len(city_result) == 0) and (len(command_result) == 0):
         print(city_result, command_result)
