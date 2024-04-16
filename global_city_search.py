@@ -5,7 +5,8 @@ import warnings
 warnings.filterwarnings('ignore')
 
 # driver 설정
-from selenium import webdriver 
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
         
 async def get_global_city(city, command): #"뉴욕"
@@ -25,12 +26,21 @@ async def get_global_city(city, command): #"뉴욕"
     # 뉴스 csv 파일로 보내기
     return {'command_type':'only_news'}
 
-  driver = webdriver.Chrome()
-
+  print("들어왔음")
+  chrome_options = webdriver.ChromeOptions()
+  chrome_options.add_argument('--no-sandbox')
+  chrome_options.add_argument('--window-size=1920,1080')
+  chrome_options.add_argument('--headless')
+  chrome_options.add_argument('--disable-gpu')
+  driver = webdriver.Chrome(options=chrome_options)
+  
   url='https://m.naver.com/'
+  
+  driver = webdriver.Chrome(options=chrome_options)
+  
   driver.get(url)
-  time.sleep(1)
-
+  driver.implicitly_wait(time_to_wait=3)
+  print("driver", )
   # # 세계 도시 목록 
   # global_citys=['뉴욕','런던','파리','도쿄','베이징','홍콩','로스앤젤레스','시카고','싱가포르','워싱턴 D.C.']
 
@@ -69,6 +79,7 @@ async def get_global_city(city, command): #"뉴욕"
       
       # print(temperature, sky, feel_temperature)
       # df.loc[0] = [city,temperature, sky, feel_temperature]
+      driver.quit()
       return {'text':f"{city}의 기온은 {temperature}이며 하늘은 {sky}입니다. {feel_temperature}입니다."}
       # dataframe를 csv로 저장
       # df.to_csv("output/city_weather.csv", encoding='utf-8-sig',index=False) # dataframe을 csv로
@@ -83,6 +94,7 @@ async def get_global_city(city, command): #"뉴욕"
     # print(city_time)
     
     # df.loc[0] = [city, city_time]
+    driver.quit()
     return {'text': f"{city}의 현지 시각은 {city_time}입니다."}
 
     # dataframe를 csv로 저장
