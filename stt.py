@@ -17,19 +17,9 @@ import subprocess
 
 # whisper_result(): 음성을 받고 특정 키워드를 찾는 함수를 만듦.
 def whisper_result():
-<<<<<<< HEAD
-    print("들어왔음")
-    # subprocess-> whisper-> wav파일을 한국어 텍스트로 변환 -> 결과를 Out에 저장
-=======
->>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     out = subprocess.run(
         ["whisper", "output/output.wav", "--language", "Korean","--output_format","txt","--output_dir","output","--thread",'3'], capture_output=True,
     )
-<<<<<<< HEAD
-    print("실행은 되었음")
-    # out(변환된 텍스트)를 윈도우면 CP949,아니면 utf-8로 디코딩 -> result변수에 저장
-=======
->>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     if platform.system()=="Windows":
         result = out.stdout.decode(encoding="CP949")
     else : 
@@ -37,40 +27,15 @@ def whisper_result():
     print(result)
     # model = whisper.load_model("base")
     # result = model.transcribe('C:/Users/seohyegyo/Desktop/upstage_python/output.wav')
-<<<<<<< HEAD
-
-    #result(디코딩한 텍스트)를 find_keyword함수를 통해 특정 키워드를 찾아 return 
-=======
->>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     return find_keyword(result)  # {"result": "내가 말한거"}
 
 # 문자열을 입력 받아 딕셔너리를 반환하는 find_keyword 함수 정의
 # sentence라는 매개변수를 통해 find_keyword의 값이 전달
 def find_keyword(sentence: str) -> dict:
-<<<<<<< HEAD
-    # 검색할 도시 list
-    citys = [
-        "뉴욕",
-        "런던",
-        "파리",
-        "도쿄",
-        "베이징",
-        "홍콩",
-        "로스앤젤레스",
-        "시카고",
-        "싱가포르",
-        "워싱턴DC",
-    ]
-    # bot에 명령할 명령어 list 처리 
-    # 도시 외 명령어 
-    command_list = ["날씨", "뉴스", "현지시각", "시각", "시간","요약","요약해","요약해줘","요약해죠","류스"]
-    # 도시 명령어 (bot이 잘못 출력한 도시 이름들?)
-=======
 
     print(sentence)
     command_list = ["날씨", "뉴스","뉴스에", "뉴스를","류스","류쓰","누스","유스","니스","나이스","현지시각", "시각", "시간","요약","요약해","요약해죠","요약해줘"]
 
->>>>>>> 69c2a71903ba06398f65200920265cee9f9d9509
     city_list = [
         "뉴욕",
         "유용",

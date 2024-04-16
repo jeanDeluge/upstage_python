@@ -103,26 +103,8 @@ async def message_others(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
 
 
-if __name__ == "__main__":
 
-    application = ApplicationBuilder().token(TOKEN).read_timeout(30).write_timeout(30).build()
-
-    start_handler = CommandHandler("start", start)
-    message_voice_handler = MessageHandler(
-        filters.VOICE , message_voice
-    )
-    message_others_handler = MessageHandler(~filters.VOICE, message_others)
-
-    application.add_handler(start_handler)
-    application.add_handler(message_voice_handler)
-    application.add_handler(message_others_handler)
-
-    # thread 처리 5개
-    application.run_polling()
     
-    for i in range(3):
-        print(i)
-        th=threading.Thread(message_voice,args=(i,))
-        th.start()
+   
         
 

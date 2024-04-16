@@ -10,3 +10,4 @@ pandas
 scipy
 python-telegram-bot
 python-dotenv
+uvicorn
