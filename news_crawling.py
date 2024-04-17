@@ -15,8 +15,8 @@ from selenium.webdriver.common.by import By
 
 
 def crawling_news():
-    # chrome driver
-    driver = webdriver.Chrome()
+    print('crawling_new함수 시작됨')
+ 
     
     # 리스트 형식으로 저장하기 위한 클래스 선언
     class MyTokenizer:
@@ -28,6 +28,15 @@ def crawling_news():
     textrank: TextRank = TextRank(mytokenizer)
     k=3 # 요약 데이터 3줄까지 설정
     
+    chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument('--no-sandbox')
+    chrome_options.add_argument('--window-size=1920,1080')
+    chrome_options.add_argument('--headless')
+    chrome_options.add_argument('--disable-gpu')
+    driver = webdriver.Chrome(options=chrome_options)
+    
+    # chrome driver
+    driver = webdriver.Chrome(options=chrome_options)
     
     url='https://news.naver.com/section/105'
     driver.get(url)
@@ -82,10 +91,3 @@ def crawling_news():
     # dataframe를 csv로 저장
     df.to_csv("output/news.csv", encoding='utf-8-sig',index=False)
     driver.close()
-
-
-### 스케쥴 매일 아침 9:30 에 크롤링 시작 
-schedule.every().day.at("09:30").do(crawling_news)
-# schedule.every(14).seconds.do(crawling_news)
-while True:
-    schedule.run_pending()
