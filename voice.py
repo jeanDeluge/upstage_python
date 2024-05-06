@@ -1,7 +1,7 @@
 import sys
 import pyaudio
 import wave
-from stt import whisper_result
+from get_commands import InputFromUser
 
 """
 (1) 음성 입력 장치(마이크)를 통해 사용자 음성 수신
@@ -85,4 +85,4 @@ wf.close()
 # p.terminate()
 
 #
-whisper_result()
+# whisper_result()

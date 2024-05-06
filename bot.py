@@ -24,10 +24,10 @@ from telegram.ext import (
     MessageHandler,
     filters,
 )
-from stt import whisper_result
+from get_commands import InputFromUser
 from global_city_search import get_global_city
 import threading
-
+from uuid import uuid4
 load_dotenv(verbose=True)
 TOKEN = os.environ.get("TOKEN")
 
@@ -54,7 +54,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     voice_file = await update.message.effective_attachment.get_file()
-    await voice_file.download_to_drive("output/output.wav")
+    filenmame = f"output/{str(uuid4)}.wav"
+
+    await voice_file.download_to_drive(filenmame)
     # voice_file = await update.message.voice.get_file()
     # await voice_file.download_to_drive("output.wav")
 
@@ -62,8 +64,9 @@ async def message_voice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         chat_id=update.effective_chat.id,
         text="Okay, Just a moment. \nIt takes a little time.",
     )
-    
-    result = whisper_result()
+
+    with InputFromUser(filenmame) as input:
+        result = input
 
     try:
         if result["error"] != -1:

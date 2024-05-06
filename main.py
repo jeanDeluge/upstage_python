@@ -32,7 +32,7 @@ def run_telegram_bot():
 
 async def run_schedule():
     crawling_news()
-    schedule.every().days.at("09:30").do(crawling_news)
+    schedule.every(2).minutes.do(crawling_news)
     while True:
         await asyncio.sleep(1)
         schedule.run_pending()
